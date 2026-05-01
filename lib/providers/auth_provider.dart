@@ -73,7 +73,7 @@ class AuthProvider extends ChangeNotifier {
     Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 10
+        distanceFilter: 1
       ),
     ).listen((Position position) {
       _coordinatesDisplay =
