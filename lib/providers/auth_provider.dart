@@ -9,11 +9,13 @@ class AuthProvider extends ChangeNotifier {
   bool _isAuthenticated = false;
   bool _isSelfDestructActive = false;
   int _authAttempts = 0;
+  String _coordinatesDisplay = "ESPERANDO SEÑAL...";
   Position? _currentPosition;
 
   bool get isAuthenticated => _isAuthenticated;
   bool get isSelfDestructActive => _isSelfDestructActive;
   Position? get currentPosition => _currentPosition;
+  String get coordinatesDisplay => _coordinatesDisplay;
 
   Future<void> authenticateOperator() async {
     try {
@@ -24,6 +26,7 @@ class AuthProvider extends ChangeNotifier {
       if (success) {
         _isAuthenticated = true;
         _authAttempts = 0;
+        await activateTracking();
       } else {
         _errorAutentication();
       }
@@ -53,9 +56,36 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateLocation(Position position) {
-    _currentPosition = position;
-    notifyListeners();
+  Future<void> activateTracking() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return;
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied)
+        return; 
+    }
+
+    if (permission == LocationPermission.deniedForever)
+      return; 
+
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10
+      ),
+    ).listen((Position position) {
+      _coordinatesDisplay =
+          "LAT: ${position.latitude.toStringAsFixed(4)} | LNG: ${position.longitude.toStringAsFixed(4)}";
+
+      _currentPosition = position;
+      notifyListeners();
+
+      print(
+        "Ubicación actualizada: ${position.latitude}, ${position.longitude}",
+      );
+    });
   }
 
   double calculateDistanceToNode(double nodeLat, double nodeLng) {
