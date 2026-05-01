@@ -87,14 +87,4 @@ class AuthProvider extends ChangeNotifier {
       );
     });
   }
-
-  double calculateDistanceToNode(double nodeLat, double nodeLng) {
-    if (_currentPosition == null) return 9999;
-    return Geolocator.distanceBetween(
-      _currentPosition!.latitude,
-      _currentPosition!.longitude,
-      nodeLat,
-      nodeLng,
-    );
-  }
 }

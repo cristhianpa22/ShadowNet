@@ -25,13 +25,12 @@ class ShadowNetApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      // El secreto está aquí:
       home: Consumer<AuthProvider>(
         builder: (context, provider, child) {
           if (provider.isAuthenticated) {
-            return const MainTerminalScreen(); // Vista principal de misiones
+            return const MainTerminalScreen();  
           } else {
-            return const AuthScreen(); // Pantalla de huella
+            return const AuthScreen(); 
           }
         },
       ),

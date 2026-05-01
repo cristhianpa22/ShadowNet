@@ -14,10 +14,9 @@ class MainTerminalScreen extends StatelessWidget {
     final mision = misionProvider.misionActual;
 
     if (authProvider.currentPosition != null) {
-      misionProvider.completarMision(
-        latitud: authProvider.currentPosition!.latitude,
-        longitud: authProvider.currentPosition!.longitude,
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        misionProvider.actualizarSeguimiento(authProvider.currentPosition!);
+      });
     }
 
     if (mision == null) {
@@ -54,11 +53,21 @@ class MainTerminalScreen extends StatelessWidget {
                       hintText: "Introduce el codigo secreto",
                     ),
                     onSubmitted: (value) => misionProvider.completarMision(
-                      latitud: authProvider.currentPosition!.latitude,
-                      longitud: authProvider.currentPosition!.longitude,
                       codigoSecreto: value,
                     ),
+                    
                   ),
+                  if(misionProvider.mensajeError != null) ...[
+                    Text(
+                      misionProvider.mensajeError,
+                      style: TextStyle(
+                        color: Colors.red ,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Courier',
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
                 ],
               )
             else if (distancia <= mision['distancia_pista'])
