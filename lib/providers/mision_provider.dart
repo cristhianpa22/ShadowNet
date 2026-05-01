@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
+import 'package:vibration/vibration.dart';
 
 class MisionProvider extends ChangeNotifier{
   List<dynamic> getOption = [];
 
   String _mensajeError = "";
+  bool _isVibrating = false;
 
   String get mensajeError => _mensajeError;
 
@@ -40,7 +42,37 @@ class MisionProvider extends ChangeNotifier{
   double _distanciaActual = 9999;
   double get distanciaActual => _distanciaActual;
 
-  void completarMision({required double latitud, required double longitud, String? codigoSecreto}){
+  void actualizarSeguimiento(Position position) async {
+    final mision = misionActual;
+    if (mision == null) return;
+
+    _distanciaActual = Geolocator.distanceBetween(
+      position.latitude,
+      position.longitude,
+      mision['latitud'],
+      mision['longitud'],
+    );
+    if (await Vibration.hasVibrator() ?? false) {
+      if (_distanciaActual <= 10) {
+        if (!_isVibrating) {
+          _isVibrating = true;
+          Vibration.vibrate(pattern: [100, 200, 100, 200, 100, 200, 400, 400]);
+          Future.delayed(const Duration(seconds: 5), () {
+            _isVibrating = false;
+          });
+        }
+      }
+      else {
+        if (_isVibrating) {
+          Vibration.cancel();
+          _isVibrating = false;
+        }
+      }
+    }
+    notifyListeners();
+  }
+
+  void completarMision({String? codigoSecreto}){
     final mision = misionActual;
 
     if(mision == null){
@@ -48,13 +80,7 @@ class MisionProvider extends ChangeNotifier{
       notifyListeners();
       return;
     }
-    _distanciaActual = Geolocator.distanceBetween(
-      latitud, 
-      longitud, 
-      mision['latitud'], 
-      mision['longitud']);
     
-
     if(codigoSecreto != mision['codigo_secreto']){
       _mensajeError = "Codigo secreto incorrecto";
       notifyListeners();
