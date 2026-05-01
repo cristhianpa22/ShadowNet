@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:geolocator/geolocator.dart';
 
 class MisionProvider extends ChangeNotifier{
   List<dynamic> getOption = [];
 
   String _mensajeError = "";
+
+  String get mensajeError => _mensajeError;
 
   MisionProvider(){
     loadData();
@@ -34,16 +37,34 @@ class MisionProvider extends ChangeNotifier{
       print("Error cargando el JSON: $e");
     }
   }
+  double _distanciaActual = 9999;
+  double get distanciaActual => _distanciaActual;
 
-  void CompletarMision(int id){
-  final index = getOption.indexWhere((m)=>m['id']==id);
+  void completarMision({required double latitud, required double longitud, String? codigoSecreto}){
+    final mision = misionActual;
 
-  if(index != -1){
-    getOption[index]['completada'] = true;
+    if(mision == null){
+      _mensajeError = "No hay misiones disponibles";
+      notifyListeners();
+      return;
+    }
+    _distanciaActual = Geolocator.distanceBetween(
+      latitud, 
+      longitud, 
+      mision['latitud'], 
+      mision['longitud']);
+    
 
+    if(codigoSecreto != mision['codigo_secreto']){
+      _mensajeError = "Codigo secreto incorrecto";
+      notifyListeners();
+      return;
+    }
+    mision['completada'] = true;
+    _mensajeError = "Mision completada correctamente";
     notifyListeners();
   }
 }
 
 
-}
+

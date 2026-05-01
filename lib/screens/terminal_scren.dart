@@ -9,31 +9,81 @@ class MainTerminalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final misionProvider = context.watch<MisionProvider>();
+    final authProvider = context.watch<AuthProvider>();
 
     final mision = misionProvider.misionActual;
+
+    if (authProvider.currentPosition != null) {
+      misionProvider.completarMision(
+        latitud: authProvider.currentPosition!.latitude,
+        longitud: authProvider.currentPosition!.longitude,
+      );
+    }
 
     if (mision == null) {
       return Text("Felicidades has completado todas las misiones");
     }
 
-    final provider = Provider.of<AuthProvider>(context);
+    //final provider = Provider.of<AuthProvider>(context);
+
+    double distancia = misionProvider.distanciaActual;
     return Scaffold(
-      body: Column(
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("mision actual: ${mision['mision']}"),
-          Text(provider.coordinatesDisplay, style: TextStyle(color: Colors.green),),
-            Text("Distancia al nodo: ${provider.calculateDistanceToNode(4.7357055, -74.2769854).toStringAsFixed(2)} metros", style: TextStyle(color: Colors.green),),
-          ElevatedButton(
-            onPressed: () {
-              misionProvider.CompletarMision(mision['id']);
-            },
-            child: Text("Marcar como completada"),
-          ),
+          children: [
+            Text("Estado ${authProvider.coordinatesDisplay}"),
+            Text("Mision actual: ${mision['titulo']}"),
+            Divider(),
 
-
-        ],
+            if (distancia <= mision['distancia_mision'])
+              Column(
+                children: [
+                  Icon(Icons.location_on, size: 50, color: Colors.green),
+                  Text(
+                    "!Mision final!",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(mision['objetivo_final']),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: "Introduce el codigo secreto",
+                    ),
+                    onSubmitted: (value) => misionProvider.completarMision(
+                      latitud: authProvider.currentPosition!.latitude,
+                      longitud: authProvider.currentPosition!.longitude,
+                      codigoSecreto: value,
+                    ),
+                  ),
+                ],
+              )
+            else if (distancia <= mision['distancia_pista'])
+              Column(
+                children: [
+                  Icon(Icons.search, size: 50, color: Colors.green),
+                  Text(
+                    "!Pista desbloqueada!",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(mision['pista'], textAlign: TextAlign.center),
+                  ),
+                  Text(
+                    "Acerctae mas para la mision final (faltan: ${distancia.toStringAsFixed(1)} metros)",
+                  ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
