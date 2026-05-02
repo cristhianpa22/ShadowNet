@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shadownet/providers/mision_provider.dart';
 import 'providers/auth_provider.dart';
 import 'screens/auth_screen.dart';
-import 'screens/terminal_scren.dart';
+import 'package:shadownet/widgets/mision_widget.dart';
 
 void main() {
   runApp(
@@ -13,7 +13,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => MisionProvider()),
       ],
       child: const ShadowNetApp(),
-    ),
+    ),  
   );
 }
 
@@ -28,7 +28,7 @@ class ShadowNetApp extends StatelessWidget {
       home: Consumer<AuthProvider>(
         builder: (context, provider, child) {
           if (provider.isAuthenticated) {
-            return const MainTerminalScreen();  
+            return const TerminalMisionWidget();  
           } else {
             return const AuthScreen(); 
           }
