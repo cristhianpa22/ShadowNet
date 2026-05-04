@@ -4,7 +4,21 @@ import 'package:provider/provider.dart';
 import 'package:shadownet/providers/mision_provider.dart';
 
 class TerminalMisionWidget extends StatefulWidget {
-  const TerminalMisionWidget({super.key});
+  final String texto;
+  final String titulo;
+  final IconData icono;
+  final Color color;
+
+  final String? distancia;
+
+const TerminalMisionWidget ({
+    super.key, 
+    required this.texto,
+    required this.titulo, 
+    required this.icono,
+    required this.color,
+    this.distancia
+});
 
   @override
   State<TerminalMisionWidget> createState() => _TerminalMisionWidgetState();
@@ -13,11 +27,15 @@ class TerminalMisionWidget extends StatefulWidget {
 class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
   final TextEditingController _controller = TextEditingController();
 
+
+
   String _textoMostrado = "";
   String _ultimoTexto = "";
+  String Titulo ="";
+  String Distancia = "";
   Timer? _timer;
 
-  void _escribirTexto(String texto) {
+  void _escribirTexto(String texto, String titulo, String distancia) {
     _textoMostrado = "";
     _timer?.cancel();
 
@@ -26,6 +44,8 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
       if (i < texto.length) {
         setState(() {
           _textoMostrado += texto[i];
+          Titulo += titulo[i];
+          Distancia += distancia[i];
         });
         i++;
       } else {
@@ -50,30 +70,18 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
 
     if (mision == null) {
       textoTerminal = ">> No hay misiones disponibles...";
-    } else {
-      textoTerminal = """
->> Inicializando sistema...
->> Cargando misión...
-
-[OBJETIVO]
-${mision['descripcion']}
-
-[PISTA]
-${mision['pista']}
-
-[DISTANCIA]
-${misionProvider.distanciaActual.toStringAsFixed(2)} metros
-
->> Ingresa el código secreto:
-""";
     }
 
-    // 🔥 Evita que se ejecute mil veces
+    // Evita que se ejecute mil veces
     if (_ultimoTexto != textoTerminal) {
       _ultimoTexto = textoTerminal;
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _escribirTexto(textoTerminal);
+        _escribirTexto(
+          widget.texto,
+          widget.titulo,
+          widget.distancia ?? "",
+        );
       });
     }
 
@@ -84,16 +92,48 @@ ${misionProvider.distanciaActual.toStringAsFixed(2)} metros
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 🖥️ TERMINAL (scrollable)
+            ///  TERMINAL (scrollable)
             Expanded(
               child: SingleChildScrollView(
-                child: Text(
-                  _textoMostrado,
-                  style: const TextStyle(
-                    color: Colors.greenAccent,
-                    fontFamily: 'Courier',
-                    fontSize: 14,
-                  ),
+                child: Column(
+                  children: [
+                    
+                    Text(
+                      ">> C: Windows/System32/ShadowNet/ >",
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 209, 134, 218),
+                        fontFamily: 'Courier',
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      Titulo,
+                      style: const TextStyle(
+                        color: widget.color,
+                        fontFamily: 'Courier',
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      _textoMostrado,
+                      style: const TextStyle(
+                        color: widget.color,
+                        fontFamily: 'Courier',
+                        fontSize: 14,
+                      ),
+                    ),
+
+                    if (widget.distancia != null)
+                    Text(
+                      Distancia,
+                      style: const TextStyle(
+                        color: widget.color,
+                        fontFamily: 'Courier',
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -101,10 +141,7 @@ ${misionProvider.distanciaActual.toStringAsFixed(2)} metros
             /// ⌨️ INPUT
             Row(
               children: [
-                const Text(
-                  ">> ",
-                  style: TextStyle(color: Colors.greenAccent),
-                ),
+                const Text(">> ", style: TextStyle(color: Colors.greenAccent)),
                 Expanded(
                   child: TextField(
                     controller: _controller,

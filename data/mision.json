@@ -4,8 +4,8 @@
         {
             "id": 1,
             "titulo": "Operación Silencio",
-            "latitud": 4.7255491,
-            "longitud": -74.2851646,
+            "latitud": 4.6951,
+            "longitud": -74.2172,
             "distancia_pista": 500,
             "distancia_mision": 10,
             "pista": "Busca cerca de la torre de reloj antigua...",
@@ -16,8 +16,8 @@
             {
                 "id":2 ,
                 "titulo": "Operación Furia Roja",
-                "latitud": 4.6097,
-                "longitud": -74.0817,
+                "latitud": 4.6951,
+                "longitud": -74.2172,
                 "distancia_pista": 500,
                 "distancia_mision": 10,
                 "pista": "Busca cerca de la torre de C del sena...",

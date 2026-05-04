@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shadownet/providers/mision_provider.dart';
 import 'providers/auth_provider.dart';
 import 'screens/auth_screen.dart';
-import 'package:shadownet/widgets/mision_widget.dart';
+import 'package:shadownet/widgets/pistas_widget.dart';
+import 'screens/terminal_scren.dart';
 
 void main() {
   runApp(
@@ -28,7 +29,7 @@ class ShadowNetApp extends StatelessWidget {
       home: Consumer<AuthProvider>(
         builder: (context, provider, child) {
           if (provider.isAuthenticated) {
-            return const TerminalMisionWidget();  
+            return const MainTerminalScreen();  
           } else {
             return const AuthScreen(); 
           }

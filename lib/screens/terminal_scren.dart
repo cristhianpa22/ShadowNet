@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadownet/providers/mision_provider.dart';
 import '../providers/auth_provider.dart';
+import 'package:shadownet/widgets/pistas_widget.dart';
 
 class MainTerminalScreen extends StatelessWidget {
   const MainTerminalScreen({super.key});
@@ -36,60 +37,30 @@ class MainTerminalScreen extends StatelessWidget {
             Divider(),
 
             if (distancia <= mision['distancia_mision'])
-              Column(
-                children: [
-                  Icon(Icons.location_on, size: 50, color: Colors.green),
-                  Text(
-                    "!Mision final!",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Text(mision['objetivo_final']),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Introduce el codigo secreto",
-                    ),
-                    onSubmitted: (value) => misionProvider.completarMision(
-                      codigoSecreto: value,
-                    ),
-                    
-                  ),
-                  if(misionProvider.mensajeError != null) ...[
-                    Text(
-                      misionProvider.mensajeError,
-                      style: TextStyle(
-                        color: Colors.red ,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Courier',
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ],
-              )
+            Expanded(child: TerminalMisionWidget(texto: mision['objetivo_final'], titulo:mision['titulo'], icono: Icons.location_on, color: Colors.red)
+            )
+             
+               
+                  // if(misionProvider.mensajeError != null) ...[
+                  //   Text(
+                  //     misionProvider.mensajeError,
+                  //     style: TextStyle(
+                  //       color: Colors.red ,
+                  //       fontWeight: FontWeight.bold,
+                  //       fontFamily: 'Courier',
+                  //       fontSize: 17,
+                  //     ),
+                  //   ),
+                  // ],
             else if (distancia <= mision['distancia_pista'])
-              Column(
-                children: [
-                  Icon(Icons.search, size: 50, color: Colors.green),
-                  Text(
-                    "!Pista desbloqueada!",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(mision['pista'], textAlign: TextAlign.center),
-                  ),
-                  Text(
-                    "Acerctae mas para la mision final (faltan: ${distancia.toStringAsFixed(1)} metros)",
-                  ),
-                ],
+              Expanded(
+                child: TerminalMisionWidget(
+                  texto: mision['pista'],
+                  titulo: mision['titulo'],
+                  icono: Icons.warning,
+                  color: Colors.yellow,
+                  distancia: "Distancia a la misión: ${distancia.toStringAsFixed(2)} metros",
+                ),
               ),
           ],
         ),
