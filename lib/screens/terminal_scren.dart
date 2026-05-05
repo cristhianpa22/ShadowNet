@@ -26,16 +26,20 @@ class MainTerminalScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.check_circle_outline, color: Color.fromARGB(255, 202, 141, 224), size: 80),
+              Icon(
+                Icons.check_circle_outline,
+                color: Color.fromARGB(255, 202, 141, 224),
+                size: 80,
+              ),
               SizedBox(height: 20),
               Text(
                 "MISION COMPLETADA\nERES EL DUEÑO DEL SENA",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 206, 163, 222), 
-                  fontFamily: 'Courier', 
+                  color: Color.fromARGB(255, 206, 163, 222),
+                  fontFamily: 'Courier',
                   fontSize: 22,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -63,38 +67,41 @@ class MainTerminalScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "ROOT@SHADOWNET:~#", 
+                        "ROOT@SHADOWNET:~#",
                         style: TextStyle(
                           color: Colors.greenAccent,
-                          fontSize: 10, 
-                          fontWeight: FontWeight.bold
-                        )
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
-                        mision['titulo'].toString().toUpperCase(), 
+                        mision['titulo'].toString().toUpperCase(),
                         style: const TextStyle(
-                          color: Colors.white, 
-                          fontSize: 14, 
-                          fontFamily: 'Courier'
-                        )
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Courier',
+                        ),
                       ),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       border: Border.all(color: colorSistema),
                       borderRadius: BorderRadius.circular(2),
                     ),
                     child: Text(
-                      enRangoMision ? "SIGNAL: BREACHING" : "LINK: STABLE", 
+                      enRangoMision ? "SIGNAL: BREACHING" : "LINK: STABLE",
                       style: TextStyle(
-                        color: colorSistema, 
-                        fontSize: 9, 
-                        fontWeight: FontWeight.bold
-                      )
+                        color: colorSistema,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -109,7 +116,11 @@ class MainTerminalScreen extends StatelessWidget {
                   border: Border.all(color: colorSistema, width: 1),
                   borderRadius: BorderRadius.circular(4),
                   boxShadow: [
-                    BoxShadow(color: colorSistema, blurRadius: 5, spreadRadius: 2),
+                    BoxShadow(
+                      color: colorSistema,
+                      blurRadius: 5,
+                      spreadRadius: 2,
+                    ),
                   ],
                 ),
                 child: Stack(
@@ -121,28 +132,68 @@ class MainTerminalScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              const Text("Estado:", style: TextStyle(color: Colors.grey, fontSize: 10, fontFamily: 'Courier')),
-                              Text("${authProvider.coordinatesDisplay}", style: TextStyle(color: colorSistema, fontSize: 10, fontFamily: 'Courier')),
+                              const Text(
+                                "Estado:",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                  fontFamily: 'Courier',
+                                ),
+                              ),
+                              Text(
+                                "${authProvider.coordinatesDisplay}",
+                                style: TextStyle(
+                                  color: colorSistema,
+                                  fontSize: 10,
+                                  fontFamily: 'Courier',
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 5),
                           Row(
                             children: [
-                              const Text("Mision Actual: ", style: TextStyle(color: Colors.grey, fontSize: 10, fontFamily: 'Courier')),
-                              Text("${mision['titulo']}", style: TextStyle(color: colorSistema, fontSize: 10, fontFamily: 'Courier')),
+                              const Text(
+                                "Mision Actual: ",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                  fontFamily: 'Courier',
+                                ),
+                              ),
+                              Text(
+                                "${mision['titulo']}",
+                                style: TextStyle(
+                                  color: colorSistema,
+                                  fontSize: 10,
+                                  fontFamily: 'Courier',
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20),
-                          
-                          Expanded(
-                            child: TerminalMisionWidget(
-                              texto: enRangoMision ? mision['objetivo_final'] : mision['pista'],
-                              titulo: mision['titulo'],
-                              icono: enRangoMision ? Icons.gps_fixed : Icons.radar,
-                              color: colorSistema,
-                              distancia: "DISTANCE_TO_NODE: ${distancia.toStringAsFixed(1)}m",
+                          if (distancia <= mision['distancia_mision'])
+                            Expanded(
+                              child: TerminalMisionWidget(
+                                texto: mision['objetivo_final'],
+                                titulo: mision['titulo'],
+                                icono: Icons.gps_fixed,
+                                color: colorSistema,
+                                distancia:
+                                    "DISTANCE_TO_NODE: ${distancia.toStringAsFixed(1)}m",
+                              ),
+                            )
+                          else if (distancia <= mision['distancia_pista'])
+                            Expanded(
+                              child: TerminalMisionWidget(
+                                texto: mision['pista'],
+                                titulo: mision['titulo'],
+                                icono: Icons.warning,
+                                color: colorSistema,
+                                distancia:
+                                    "DISTANCE_TO_NODE: ${distancia.toStringAsFixed(1)}m",
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -155,7 +206,9 @@ class MainTerminalScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               decoration: const BoxDecoration(
                 color: Color(0xFF0F0F0F),
-                border: Border(top: BorderSide(color: Color(0xFF1A1A1A), width: 1)),
+                border: Border(
+                  top: BorderSide(color: Color(0xFF1A1A1A), width: 1),
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,14 +216,17 @@ class MainTerminalScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("COORD_X_Y", style: TextStyle(color: Colors.grey, fontSize: 8)),
+                      const Text(
+                        "COORD_X_Y",
+                        style: TextStyle(color: Colors.grey, fontSize: 8),
+                      ),
                       Text(
-                        authProvider.coordinatesDisplay.split(':').last.trim(), 
+                        authProvider.coordinatesDisplay.split(':').last.trim(),
                         style: TextStyle(
-                          color: colorSistema, 
-                          fontSize: 10, 
-                          fontFamily: 'Courier'
-                        )
+                          color: colorSistema,
+                          fontSize: 10,
+                          fontFamily: 'Courier',
+                        ),
                       ),
                     ],
                   ),
@@ -181,19 +237,16 @@ class MainTerminalScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const Text(
-                        "SYS_STATUS", 
-                        style: TextStyle(
-                          color: Colors.grey, 
-                          fontSize: 8
-                        )
+                        "SYS_STATUS",
+                        style: TextStyle(color: Colors.grey, fontSize: 8),
                       ),
                       Text(
-                        enRangoMision ? "OVERRIDE" : "SCANNING", 
+                        enRangoMision ? "OVERRIDE" : "SCANNING",
                         style: TextStyle(
-                          color: colorSistema, 
-                          fontSize: 10, 
-                          fontFamily: 'Courier'
-                        )
+                          color: colorSistema,
+                          fontSize: 10,
+                          fontFamily: 'Courier',
+                        ),
                       ),
                     ],
                   ),
