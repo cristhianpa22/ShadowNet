@@ -32,7 +32,9 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
   String Titulo = "";
   String Distancia = "";
   Timer? _timer;
-
+  
+  final Color colorEntorno = const Color(0xFFFF9100);
+  
   void _escribirTexto(String texto, String titulo, String distancia) {
     _textoMostrado = "";
     Titulo = "";
@@ -92,59 +94,111 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
     return Material(
       color: Colors.black,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ///  TERMINAL (scrollable)
             Expanded(
-              child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(
+                    color: colorEntorno,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorEntorno,
+                      blurRadius: 5,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
                 child: Column(
                   children: [
-                    Text(
-                      ">> C: Windows/System32/ShadowNet/ >",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 209, 134, 218),
-                        fontFamily: 'Courier',
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      Titulo,
-                      style: TextStyle(
-                        color: widget.color,
-                        fontFamily: 'Courier',
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      _textoMostrado,
-                      style: TextStyle(
-                        color: widget.color,
-                        fontFamily: 'Courier',
-                        fontSize: 14,
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          _buildCircle(const Color(0xFFFF5F56)),
+                          const SizedBox(width: 8),
+                          _buildCircle(const Color(0xFFFFBD2E)),
+                          const SizedBox(width: 8),
+                          _buildCircle(const Color(0xFF27C93F)),
+                        ],
                       ),
                     ),
 
-
-                    if (widget.distancia != null)
-                      Text(
-                        Distancia,
-                        style: TextStyle(
-                          color: widget.color,
-                          fontFamily: 'Courier',
-                          fontSize: 14,
+                    Container(
+                      height: 2,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            colorEntorno,
+                            colorEntorno,
+                          ],
                         ),
                       ),
+                    ),
 
-                     
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              ">> C: Windows/System32/ShadowNet/ >",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 209, 134, 218),
+                                fontFamily: 'Courier',
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              Titulo,
+                              style: TextStyle(
+                                color: widget.color,
+                                fontFamily: 'Courier',
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              _textoMostrado,
+                              style: const TextStyle(
+                                color: Color(0xFFA8B0B0),
+                                fontFamily: 'Courier',
+                                fontSize: 14,
+                              ),
+                            ),
+                            if (widget.distancia != null) ...[
+                              const SizedBox(height: 10),
+                              Text(
+                                Distancia,
+                                style: TextStyle(
+                                  color: colorEntorno,
+                                  fontFamily: 'Courier',
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
 
-            /// ⌨️ INPUT
             Row(
               children: [
                 const Text(">> ", style: TextStyle(color: Colors.greenAccent)),
@@ -152,11 +206,11 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
                   child: TextField(
                     controller: _controller,
                     cursorColor: Colors.greenAccent,
-                    style: const TextStyle(color: Colors.greenAccent),
+                    style: const TextStyle(color: Color(0xFFFF9100)),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Escribe código...",
-                      hintStyle: TextStyle(color: Colors.green),
+                      hintText: "Digita el codigo...",
+                      hintStyle: TextStyle(color: Color(0xFFFF9100)),
                     ),
                   ),
                 ),
@@ -165,7 +219,6 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
 
             const SizedBox(height: 10),
 
-            /// 🔘 BOTÓN
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -179,13 +232,12 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
               },
               child: const Text(
                 "Ejecutar",
-                style: TextStyle(color: Colors.greenAccent),
+                style: TextStyle(color: Color((0xFFFF9100))),
               ),
             ),
 
             const SizedBox(height: 10),
 
-            /// 📢 MENSAJE DEL SISTEMA
             Text(
               misionProvider.mensajeError,
               style: TextStyle(
@@ -199,4 +251,16 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
       ),
     );
   }
+
+  Widget _buildCircle(Color color) {
+    return Container(
+      width: 12,
+      height: 12,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+
 }
