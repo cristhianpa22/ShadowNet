@@ -25,8 +25,6 @@ class MisionProvider extends ChangeNotifier{
     );
   }
 
-
-
   Future<void> loadData() async{
     try {
       final String value = await rootBundle.loadString('data/mision.json');
