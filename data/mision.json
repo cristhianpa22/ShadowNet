@@ -4,8 +4,8 @@
         {
             "id": 1,
             "titulo": "Operación Silencio",
-            "latitud": 4.6951,
-            "longitud": -74.2172,
+            "latitud": 4.72550,
+            "longitud": -74.28527,
             "distancia_pista": 500,
             "distancia_mision": 10,
             "pista": "Busca cerca de la torre de reloj antigua...",

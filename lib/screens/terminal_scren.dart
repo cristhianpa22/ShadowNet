@@ -37,7 +37,7 @@ class MainTerminalScreen extends StatelessWidget {
             Divider(),
 
             if (distancia <= mision['distancia_mision'])
-            Expanded(child: TerminalMisionWidget(texto: mision['objetivo_final'], titulo:mision['titulo'], icono: Icons.location_on, color: Colors.red)
+            Expanded(child: TerminalMisionWidget(texto: mision['objetivo_final'], titulo:mision['titulo'], icono: Icons.location_on, color: Colors.red,distancia:authProvider.coordinatesDisplay,)
             )
              
                

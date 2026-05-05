@@ -11,14 +11,14 @@ class TerminalMisionWidget extends StatefulWidget {
 
   final String? distancia;
 
-const TerminalMisionWidget ({
-    super.key, 
+  const TerminalMisionWidget({
+    super.key,
     required this.texto,
-    required this.titulo, 
+    required this.titulo,
     required this.icono,
     required this.color,
-    this.distancia
-});
+    this.distancia,
+  });
 
   @override
   State<TerminalMisionWidget> createState() => _TerminalMisionWidgetState();
@@ -27,30 +27,41 @@ const TerminalMisionWidget ({
 class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
   final TextEditingController _controller = TextEditingController();
 
-
-
   String _textoMostrado = "";
   String _ultimoTexto = "";
-  String Titulo ="";
+  String Titulo = "";
   String Distancia = "";
   Timer? _timer;
 
   void _escribirTexto(String texto, String titulo, String distancia) {
     _textoMostrado = "";
+    Titulo = "";
+    Distancia = "";
     _timer?.cancel();
 
     int i = 0;
+    int j = 0;
+    int k = 0;
+
     _timer = Timer.periodic(const Duration(milliseconds: 25), (timer) {
-      if (i < texto.length) {
-        setState(() {
-          _textoMostrado += texto[i];
-          Titulo += titulo[i];
-          Distancia += distancia[i];
-        });
-        i++;
-      } else {
+      if (!mounted) {
         timer.cancel();
+        return;
       }
+
+      if (j >= titulo.length && i >= texto.length && k >= distancia.length) {
+        timer.cancel();
+        return;
+      }
+      setState(() {
+        if (j < titulo.length) {
+          Titulo += titulo[j++];
+        } else if (i < texto.length) {
+          _textoMostrado += texto[i++];
+        } else if (k < distancia.length) {
+          Distancia += distancia[k++];
+        }
+      });
     });
   }
 
@@ -66,22 +77,15 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
     final misionProvider = Provider.of<MisionProvider>(context);
     final mision = misionProvider.misionActual;
 
-    String textoTerminal = "";
-
-    if (mision == null) {
-      textoTerminal = ">> No hay misiones disponibles...";
-    }
+    final clave = '${widget.texto}|${widget.titulo}|${widget.distancia}';
 
     // Evita que se ejecute mil veces
-    if (_ultimoTexto != textoTerminal) {
-      _ultimoTexto = textoTerminal;
+    if (_ultimoTexto != clave) {
+      _ultimoTexto = clave;
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _escribirTexto(
-          widget.texto,
-          widget.titulo,
-          widget.distancia ?? "",
-        );
+        if (!mounted) return;
+        _escribirTexto(widget.texto, widget.titulo, widget.distancia ?? "");
       });
     }
 
@@ -97,7 +101,6 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    
                     Text(
                       ">> C: Windows/System32/ShadowNet/ >",
                       style: const TextStyle(
@@ -109,7 +112,7 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
                     const SizedBox(height: 10),
                     Text(
                       Titulo,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: widget.color,
                         fontFamily: 'Courier',
                         fontSize: 14,
@@ -117,22 +120,25 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
                     ),
                     Text(
                       _textoMostrado,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: widget.color,
                         fontFamily: 'Courier',
                         fontSize: 14,
                       ),
                     ),
 
+
                     if (widget.distancia != null)
-                    Text(
-                      Distancia,
-                      style: const TextStyle(
-                        color: widget.color,
-                        fontFamily: 'Courier',
-                        fontSize: 14,
+                      Text(
+                        Distancia,
+                        style: TextStyle(
+                          color: widget.color,
+                          fontFamily: 'Courier',
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
+
+                     
                   ],
                 ),
               ),
