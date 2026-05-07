@@ -85,7 +85,7 @@ class _ContextoScreenState extends State<ContextoScreen> with TickerProviderStat
       if (widget.esIntro) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MainTerminalScreen()),
+          MaterialPageRoute(builder: (context) =>  MainTerminalScreen()),
         );
       // } else {
       //   Navigator.pushReplacement(

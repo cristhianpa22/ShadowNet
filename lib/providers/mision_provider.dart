@@ -55,7 +55,7 @@ class MisionProvider extends ChangeNotifier{
         if (!_isVibrating) {
           _isVibrating = true;
           Vibration.vibrate(pattern: [100, 200, 100, 200, 100, 200, 400, 400]);
-          Future.delayed(const Duration(seconds: 5), () {
+          Future.delayed(const Duration(seconds: 15), () {
             _isVibrating = false;
           });
         }
