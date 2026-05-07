@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:shadownet/providers/mision_provider.dart';
 import 'providers/auth_provider.dart';
 import 'screens/auth_screen.dart';
-import 'package:shadownet/widgets/pistas_widget.dart';
 import 'screens/terminal_scren.dart';
 
 void main() {
