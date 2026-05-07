@@ -15,6 +15,7 @@ class AuthScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         title: Column(
           children: [
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -223,64 +224,64 @@ class AuthScreen extends StatelessWidget {
               ),
             const SizedBox(height: 20),
             if (!provider.isSelfDestructActive)
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 20),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.green,
-                    width: 2,
-                    style: BorderStyle.solid,
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(left: 20),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.green,
+                      width: 2,
+                      style: BorderStyle.solid,
+                    ),
                   ),
                 ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      ">  ACCEDIENDO A LA RED ",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Courier',
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "> ENCRIPTANDO DATOS ",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Courier',
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      ">  ESPERANDO AUTORIZACION ",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Courier',
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "BIOMETRIA ...",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Courier',
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    ">  ACCEDIENDO A LA RED ",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Courier',
-                      fontSize: 17,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "> ENCRIPTANDO DATOS ",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Courier',
-                      fontSize: 17,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    ">  ESPERANDO AUTORIZACION ",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Courier',
-                      fontSize: 17,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "BIOMETRIA ...",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Courier',
-                      fontSize: 17,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

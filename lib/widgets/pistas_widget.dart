@@ -197,69 +197,13 @@ class _TerminalMisionWidgetState extends State<TerminalMisionWidget> {
                   ),
               ),
 
-              // Row(
-              //   children: [
-              //     const Text(">> ", style: TextStyle(color: Color(0xFFFF9100))),
-              //     Expanded(
-              //       child: TextField(
-              //         controller: _controller,
-              //         cursorColor: Color(0xFF27C93F),
-              //         style: const TextStyle(color: Color(0xFFFF9100)),
-              //         decoration: const InputDecoration(
-              //           border: InputBorder.none,
-              //           hintText: "Digita el codigo...",
-              //           hintStyle: TextStyle(color: Color(0xC476FBFB)),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              const SizedBox(height: 20),
+              
 
-              GridView.count(
-                crossAxisCount: 2,         // 2 columnas (2 arriba, 2 abajo)
-                shrinkWrap: true,          // Permite que el grid ocupe solo el espacio necesario
-                physics: const NeverScrollableScrollPhysics(), // Evita conflictos con el scroll de la app
-                mainAxisSpacing: 12,       // Espacio vertical entre filas
-                crossAxisSpacing: 12,      // Espacio horizontal entre botones
-                childAspectRatio: 2.2,     // Ajusta la forma (más ancho que alto)
-                children: [
-                  _buildSmallButton("5000", colorEntorno),
-                  _buildSmallButton("8000", Color(0xFFFF9100)),
-                  _buildSmallButton("9000", Color(0xFFBC00FF)),
-                  _buildSmallButton("1000", Color(0xFF27C93F)),
-                ],
-              ),
+              
 
               const SizedBox(height: 20),
 
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  side: const BorderSide(color: Color(0xFFD186DA)),
-                ),
-                onPressed: () {
-                  misionProvider.completarMision(
-                    codigoSecreto: _controller.text.trim(),
-                  );
-                  _controller.clear();
-                },
-                child: const Text(
-                  "Ejecutar",
-                  style: TextStyle(color: Color(0xC476FBFB)),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              Text(
-                misionProvider.mensajeError,
-                style: TextStyle(
-                  color: misionProvider.mensajeError.contains("correctamente")
-                      ? Colors.green
-                      : Colors.red,
-                ),
-              ),
+              
             ],
           ),
         ),
