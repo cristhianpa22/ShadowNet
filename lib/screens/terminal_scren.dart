@@ -21,7 +21,7 @@ class MainTerminalScreen extends StatelessWidget {
 
     if (mision == null) {
       return const Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 34, 42, 54),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -53,13 +53,13 @@ class MainTerminalScreen extends StatelessWidget {
     Color colorSistema = Color(0xC476FBFB);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0A0A),
+      backgroundColor: Color(0xFF111419),
       body: SafeArea(
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-              color: Colors.black,
+              color: Color(0xFF111419),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -69,7 +69,7 @@ class MainTerminalScreen extends StatelessWidget {
                       const Text(
                         "ROOT@SHADOWNET:~#",
                         style: TextStyle(
-                          color: Colors.greenAccent,
+                          color: Color(0xFF27C93F),
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
@@ -106,18 +106,18 @@ class MainTerminalScreen extends StatelessWidget {
               ),
             ),
 
-            const Divider(color: Color(0xFF1A1A1A), thickness: 2, height: 2),
+            const Divider(color: Color(0xFF111419), thickness: 2, height: 2),
 
             Expanded(
               child: Container(
                 margin: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Color(0xFF111419),
                   border: Border.all(color: colorSistema, width: 1),
                   borderRadius: BorderRadius.circular(4),
                   boxShadow: [
                     BoxShadow(
-                      color: colorSistema,
+                      color: Color(0xFF27C93F),
                       blurRadius: 5,
                       spreadRadius: 2,
                     ),
