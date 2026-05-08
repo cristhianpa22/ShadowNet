@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:vibration/vibration.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final LocalAuthentication _auth = LocalAuthentication();
+  static const MethodChannel _biometricChannel =
+    MethodChannel('shadownet/biometric');
+  
 
   bool _isAuthenticated = false;
   bool _isSelfDestructActive = false;
@@ -18,23 +22,44 @@ class AuthProvider extends ChangeNotifier {
   String get coordinatesDisplay => _coordinatesDisplay;
 
   Future<void> authenticateOperator() async {
-    try {
-      bool success = await _auth.authenticate(
-        localizedReason: 'Valida que tu ADN es humano',
-      );
+  if (_isSelfDestructActive) return;
 
-      if (success) {
-        _isAuthenticated = true;
-        _authAttempts = 0;
-        await activateTracking();
-      } else {
-        _errorAutentication();
-      }
-    } catch (e) {
+  try {
+    if (!Platform.isAndroid) {
+      // Si quieres, aquí dejas fallback para iOS
       _errorAutentication();
+      notifyListeners();
+      return;
     }
-    notifyListeners();
+
+    final Map<dynamic, dynamic>? res =
+        await _biometricChannel.invokeMethod<Map<dynamic, dynamic>>(
+      'startBiometric',
+    );
+
+    final status = res?['status'] as String?;
+
+    if (status == 'success') {
+      _isAuthenticated = true;
+      _authAttempts = 0;
+      await activateTracking();
+    } else if (status == 'locked') {
+      // 3 fallos sin cerrar manualmente el prompt
+      _authAttempts = 3;
+      _triggerSelfDestruct(); // tu error actual de auth_screen se mostrará
+    } else {
+      // "error": cancelación, cierre por sistema, etc.
+      // Si NO quieres contar cancelaciones, no sumes aquí.
+      // _errorAutentication();
+    }
+  } on PlatformException {
+    _errorAutentication();
+  } catch (_) {
+    _errorAutentication();
   }
+
+  notifyListeners();
+}
 
   void _errorAutentication() {
     _authAttempts++;
