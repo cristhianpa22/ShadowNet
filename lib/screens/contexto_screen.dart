@@ -33,12 +33,7 @@ class _ContextoScreenState extends State<ContextoScreen> with TickerProviderStat
         "Deberás descifrar las pistas y moverte físicamente por el sector.",
         "Al llegar a una zona segura, el terminal revelará un fragmento del código.",
       ];
-    } else {
-      _currentStep = 0;
-      _guiones = [
-        "Conexión Establecida.\n\nEncriptacion rota. Eres oficialmente el dueño del nodo SENA.\n\nBienvenido."
-      ];
-    }
+    } 
     _startTypewriter(_guiones[_currentStep]);
   }
 
@@ -87,12 +82,12 @@ class _ContextoScreenState extends State<ContextoScreen> with TickerProviderStat
           context,
           MaterialPageRoute(builder: (context) =>  MainTerminalScreen()),
         );
-      // } else {
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => const AccesocorrectoScreen()),
-      //   );
-      }
+      } else {
+      _currentStep = 0;
+      _guiones = [
+        "Conexión Establecida.\n\nEncriptacion rota. Eres oficialmente el dueño del nodo SENA.\n\nBienvenido."
+      ];
+    }
     }
   }
 

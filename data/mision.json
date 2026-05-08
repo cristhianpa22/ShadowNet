@@ -4,8 +4,8 @@
         {
             "id": 1,
             "titulo": "Operación Silencio",
-            "latitud":  4.6955889,
-            "longitud": -74.2170178,
+            "latitud":  4.6954517,
+            "longitud": -74.2171367,
             "distancia_pista": 500,
             "distancia_mision": 10,
             "pista": "El contacto o la información se encuentra cerca de la biblioteca.",
