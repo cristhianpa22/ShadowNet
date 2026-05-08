@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shadownet/screens/contexto_screen.dart';
 import '../providers/auth_provider.dart';
 import '../providers/mision_provider.dart';
 import '../widgets/pistas_widget.dart';
@@ -25,7 +27,7 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
     }
 
     if (mision == null) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: Color.fromARGB(255, 34, 42, 54),
         body: Center(
           child: Column(
@@ -46,6 +48,13 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+                child: Text("Fin del juego"),
               ),
             ],
           ),
@@ -71,14 +80,6 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "ROOT@SHADOWNET:~#",
-                        style: TextStyle(
-                          color: Color(0xFF27C93F),
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       Text(
                         mision['titulo'].toString().toUpperCase(),
                         style: const TextStyle(
@@ -92,7 +93,7 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
-                      vertical: 4,
+                      vertical: 2,
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(color: colorSistema),
@@ -131,7 +132,7 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                 child: Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(9),
+                      padding: const EdgeInsets.all(5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -194,12 +195,7 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                                       const Text(
                                         ">> ",
                                         style: TextStyle(
-                                          color: Color.fromARGB(
-                                            255,
-                                            146,
-                                            125,
-                                            98,
-                                          ),
+                                          color: Color.from(alpha: 1, red: 0.573, green: 0.49, blue: 0.384),
                                         ),
                                       ),
                                       Expanded(
@@ -220,7 +216,7 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                                       ),
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                           minimumSize: Size(20, 30),
+                                          minimumSize: Size(20, 30),
                                           backgroundColor: Colors.black,
                                           side: const BorderSide(
                                             color: Color(0xFFD186DA),
@@ -233,11 +229,11 @@ class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
                                           );
                                           _controller.clear();
                                         },
-                                        child: const Icon(Icons.send_outlined,size: 15,)
+                                        child: const Icon(
+                                          Icons.send_outlined,
+                                          size: 15,
+                                        ),
                                       ),
-
-                                      const SizedBox(height: 3),
-
                                       Text(
                                         misionProvider.mensajeError,
                                         style: TextStyle(

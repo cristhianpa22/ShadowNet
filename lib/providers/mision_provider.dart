@@ -83,9 +83,9 @@ class MisionProvider extends ChangeNotifier{
       _mensajeError = "Codigo secreto incorrecto";
       notifyListeners();
       return;
+      
     }
     mision['completada'] = true;
-    _mensajeError = "Mision completada correctamente";
     notifyListeners();
   }
 }
