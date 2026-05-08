@@ -25,32 +25,8 @@
             "codigo_secreto": "46",
             "completada": false
         },
-        {
+         {
             "id":3 ,
-            "titulo": "Operación Tierra",
-            "latitud": 4.6952768,
-            "longitud": -74.2171834,
-            "distancia_pista": 500,
-            "distancia_mision": 10,
-            "pista": "Iniciar reconocimiento cerca de la entrada del bloque C.",
-            "objetivo_final": "Identificar al responsable de la elaboración del plan de emergencia.",
-            "codigo_secreto": "7 semestre",
-            "completada": false
-        },
-        {
-            "id":4 ,
-            "titulo": "Operación Sombra",
-            "latitud": 4.6953917,
-            "longitud": -74.2166078,
-            "distancia_pista": 500,
-            "distancia_mision": 10,
-            "pista": "Iniciar reconocimiento en las inmediaciones del comedor.",
-            "objetivo_final": "Identificar el color predominante en las sillas.",
-            "codigo_secreto": "amarillo",
-            "completada": false            
-        },
-        {
-            "id":5 ,
             "titulo": "Operación Eclipse",
             "latitud": 4.6954786,
             "longitud": -74.2164244,
@@ -61,6 +37,9 @@
             "codigo_secreto": "2300",
             "completada": false
         }
+       
+        
+       
         
     ]
 }
