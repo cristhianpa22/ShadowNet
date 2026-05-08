@@ -4,8 +4,13 @@ import '../providers/auth_provider.dart';
 import '../providers/mision_provider.dart';
 import '../widgets/pistas_widget.dart';
 
-class MainTerminalScreen extends StatelessWidget {
-  const MainTerminalScreen({super.key});
+class MainTerminalScreen extends StatefulWidget {
+  @override
+  State<MainTerminalScreen> createState() => _MainTerminalMisionWidget();
+}
+
+class _MainTerminalMisionWidget extends State<MainTerminalScreen> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class MainTerminalScreen extends StatelessWidget {
 
     if (mision == null) {
       return const Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 34, 42, 54),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -53,13 +58,13 @@ class MainTerminalScreen extends StatelessWidget {
     Color colorSistema = Color(0xC476FBFB);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0A0A),
+      backgroundColor: Color(0xFF111419),
       body: SafeArea(
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-              color: Colors.black,
+              color: Color(0xFF111419),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -69,7 +74,7 @@ class MainTerminalScreen extends StatelessWidget {
                       const Text(
                         "ROOT@SHADOWNET:~#",
                         style: TextStyle(
-                          color: Colors.greenAccent,
+                          color: Color(0xFF27C93F),
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
@@ -106,18 +111,18 @@ class MainTerminalScreen extends StatelessWidget {
               ),
             ),
 
-            const Divider(color: Color(0xFF1A1A1A), thickness: 2, height: 2),
+            const Divider(color: Color(0xFF111419), thickness: 2, height: 2),
 
             Expanded(
               child: Container(
-                margin: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Color(0xFF111419),
                   border: Border.all(color: colorSistema, width: 1),
                   borderRadius: BorderRadius.circular(4),
                   boxShadow: [
                     BoxShadow(
-                      color: colorSistema,
+                      color: Color(0xFF27C93F),
                       blurRadius: 5,
                       spreadRadius: 2,
                     ),
@@ -126,7 +131,7 @@ class MainTerminalScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(9),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -150,7 +155,7 @@ class MainTerminalScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 2),
                           Row(
                             children: [
                               const Text(
@@ -174,13 +179,78 @@ class MainTerminalScreen extends StatelessWidget {
                           const SizedBox(height: 20),
                           if (distancia <= mision['distancia_mision'])
                             Expanded(
-                              child: TerminalMisionWidget(
-                                texto: mision['objetivo_final'],
-                                titulo: mision['titulo'],
-                                icono: Icons.gps_fixed,
-                                color: colorSistema,
-                                distancia:
-                                    "DISTANCE_TO_NODE: ${distancia.toStringAsFixed(1)}m",
+                              child: Column(
+                                children: [
+                                  TerminalMisionWidget(
+                                    texto: mision['objetivo_final'],
+                                    titulo: mision['titulo'],
+                                    icono: Icons.gps_fixed,
+                                    color: colorSistema,
+                                    distancia:
+                                        "DISTANCE_TO_NODE: ${distancia.toStringAsFixed(1)}m",
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        ">> ",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                            255,
+                                            146,
+                                            125,
+                                            98,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _controller,
+                                          cursorColor: Color(0xFF27C93F),
+                                          style: const TextStyle(
+                                            color: Color(0xFFFF9100),
+                                          ),
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Digita el codigo...",
+                                            hintStyle: TextStyle(
+                                              color: Color(0xC476FBFB),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                           minimumSize: Size(20, 30),
+                                          backgroundColor: Colors.black,
+                                          side: const BorderSide(
+                                            color: Color(0xFFD186DA),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          misionProvider.completarMision(
+                                            codigoSecreto: _controller.text
+                                                .trim(),
+                                          );
+                                          _controller.clear();
+                                        },
+                                        child: const Icon(Icons.send_outlined,size: 15,)
+                                      ),
+
+                                      const SizedBox(height: 3),
+
+                                      Text(
+                                        misionProvider.mensajeError,
+                                        style: TextStyle(
+                                          color:
+                                              misionProvider.mensajeError
+                                                  .contains("correctamente")
+                                              ? Colors.green
+                                              : Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             )
                           else if (distancia <= mision['distancia_pista'])
